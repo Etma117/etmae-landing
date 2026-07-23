@@ -13,9 +13,10 @@ const fanlink = 'https://etmae.fanlink.tv/tellmewhy';
 const spotifyLink = 'https://open.spotify.com/album/0pTFgF72Nx0OhKdXJ7jYFJ';
 const deezerLink = 'https://www.deezer.com/us/album/937244001';
 const socialLinks = [
-	{ label: 'TikTok', href: 'https://www.tiktok.com/@etmaemusic', icon: 'video' },
-	{ label: 'Tumblr', href: 'https://www.tumblr.com/etmaemusic', icon: 'link' },
-	{ label: 'Snapchat', href: 'https://www.snapchat.com/add/etmaemusic?share_id=rbcUyvKnMCM&locale=es-MX', icon: 'camera' },
+	{ label: 'TikTok', href: 'https://www.tiktok.com/@etmaemusic', icon: 'video', eyebrow: 'SÍGUEME EN' },
+	{ label: 'Tumblr', href: 'https://www.tumblr.com/etmaemusic', icon: 'link', eyebrow: 'SÍGUEME EN' },
+	{ label: 'Snapchat', href: 'https://www.snapchat.com/add/etmaemusic?share_id=rbcUyvKnMCM&locale=es-MX', icon: 'camera', eyebrow: 'SÍGUEME EN' },
+	{ label: 'contacto@etmae.com', href: 'mailto:contacto@etmae.com', icon: 'mail', eyebrow: 'ESCRÍBEME A', external: false },
 ];
 ---
 
@@ -44,6 +45,7 @@ const socialLinks = [
 				<symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 7h4l2-2h4l2 2h4v12H4V7Z" /><circle cx="12" cy="13" r="4" /></symbol>
 				<symbol id="i-sound" viewBox="0 0 24 24"><path d="M4 10v4h4l5 4V6l-5 4H4Z" /><path d="M16 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12" /></symbol>
 				<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M14 7l5 5-5 5" /></symbol>
+				<symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="1" /><path d="m3 7 9 7 9-7" /></symbol>
 			</defs>
 		</svg>
 
@@ -196,9 +198,14 @@ const socialLinks = [
 						<svg class="external"><use href="#i-external"></use></svg>
 					</a>
 					{socialLinks.map((social) => (
-						<a class="social-card" href={social.href} target="_blank" rel="noreferrer">
+						<a
+							class="social-card"
+							href={social.href}
+							target={social.external === false ? undefined : '_blank'}
+							rel={social.external === false ? undefined : 'noreferrer'}
+						>
 							<svg><use href={`#i-${social.icon}`}></use></svg>
-							<div><small>SÍGUEME EN</small><strong>{social.label}</strong></div>
+							<div><small>{social.eyebrow}</small><strong>{social.label}</strong></div>
 							<svg class="external"><use href="#i-external"></use></svg>
 						</a>
 					))}
