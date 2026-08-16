@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HistoryTable from '../../components/HistoryTable.astro';
+---
+
+<BaseLayout title="Historia — Etmae" description="Bitácora emocional de Etmae. Cada canción guarda cómo se sintió.">
+	<main>
+		<section class="history-index">
+			<div class="history-index-copy">
+				<p class="eyebrow"><span></span> C:\ETMAE\HISTORIA</p>
+				<h2>HISTORIA</h2>
+				<p>No hago música para explicar lo que pasó. La hago para conservar cómo se sintió. Escucha el archivo o lee su señal.</p>
+			</div>
+			<HistoryTable />
+		</section>
+	</main>
+</BaseLayout>

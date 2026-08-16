@@ -1,0 +1,116 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { tracks, getAdjacentTracks, type Track } from '../../data/tracks';
+
+export function getStaticPaths() {
+	return tracks.map((track) => ({
+		params: { slug: track.slug },
+		props: { track },
+	}));
+}
+
+interface Props {
+	track: Track;
+}
+
+const { track } = Astro.props;
+const { previous, next } = getAdjacentTracks(track.slug);
+const fileName = track.code;
+---
+
+<BaseLayout title={`${track.title} — Etmae`} description={track.teaser}>
+	<main>
+		<section class="story-page">
+			<div class="story-layout">
+				<div class="window story-window">
+					<div class="titlebar purple">
+						<span><svg><use href="#i-doc"></use></svg> C:\ETMAE\HISTORIA\{fileName}</span>
+						<div class="window-controls" aria-hidden="true"><i>_</i><i>□</i><i>×</i></div>
+					</div>
+					<div class="archive-toolbar"><span>Archivo</span><span>Editar</span><span>Buscar</span><span>Ayuda</span></div>
+					<div class="story-content">
+						<p class="prompt">C:\ETMAE\HISTORIA&gt; OPEN {fileName}<span class="cursor">_</span></p>
+						<div class="story-meta">
+							<span>AÑO / {track.year}</span>
+							<span>TIPO / BITÁCORA</span>
+							<span>{track.code}</span>
+						</div>
+						<h1>{track.title}</h1>
+						<div class="story-body">
+							{track.story.map((paragraph) => <p>{paragraph}</p>)}
+						</div>
+						<div class="story-actions">
+							{track.href ? (
+								<a class="win-button primary" href={track.href} target="_blank" rel="noreferrer">
+									<svg><use href="#i-play"></use></svg>
+									ESCUCHAR
+								</a>
+							) : (
+								<span class="win-button is-pending">PRONTO EN SPOTIFY</span>
+							)}
+							<a class="text-link" href="/#musica">
+								<svg><use href="#i-back"></use></svg>
+								VOLVER A ARCHIVOS
+							</a>
+						</div>
+						<p class="system-message">[ OK ] Señal conservada. El archivo sigue activo.</p>
+					</div>
+				</div>
+
+				<aside class="story-side">
+					{previous ? (
+						<a class="story-nav-card" href={`/historia/${previous.slug}`}>
+							<svg><use href="#i-back"></use></svg>
+							<div>
+								<small>ARCHIVO ANTERIOR</small>
+								<strong>{previous.title}</strong>
+							</div>
+						</a>
+					) : (
+						<div class="story-nav-card is-disabled">
+							<svg><use href="#i-back"></use></svg>
+							<div>
+								<small>ARCHIVO ANTERIOR</small>
+								<strong>Inicio del directorio</strong>
+							</div>
+						</div>
+					)}
+					{next ? (
+						<a class="story-nav-card" href={`/historia/${next.slug}`}>
+							<svg><use href="#i-arrow"></use></svg>
+							<div>
+								<small>SIGUIENTE ARCHIVO</small>
+								<strong>{next.title}</strong>
+							</div>
+						</a>
+					) : (
+						<div class="story-nav-card is-disabled">
+							<svg><use href="#i-arrow"></use></svg>
+							<div>
+								<small>SIGUIENTE ARCHIVO</small>
+								<strong>Fin del directorio</strong>
+							</div>
+						</div>
+					)}
+					{track.href ? (
+						<a class="story-nav-card" href={track.href} target="_blank" rel="noreferrer">
+							<svg><use href="#i-external"></use></svg>
+							<div>
+								<small>SMART LINK</small>
+								<strong>Abrir transmisión</strong>
+							</div>
+						</a>
+					) : (
+						<div class="story-nav-card is-disabled">
+							<svg><use href="#i-sound"></use></svg>
+							<div>
+								<small>TRANSMISIÓN</small>
+								<strong>Pronto en Spotify</strong>
+							</div>
+						</div>
+					)}
+				</aside>
+			</div>
+		</section>
+	</main>
+</BaseLayout>

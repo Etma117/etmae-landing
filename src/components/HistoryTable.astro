@@ -1,0 +1,115 @@
+---
+import { tracks } from '../data/tracks';
+
+const pageSize = 10;
+const totalPages = Math.ceil(tracks.length / pageSize);
+---
+
+<div class="track-browser" data-page-size={pageSize}>
+	<div class="browser-header" aria-hidden="true">
+		<span>NOMBRE</span><span>FECHA</span><span>ESCUCHAR</span><span>HISTORIA</span>
+	</div>
+	{tracks.map((track, index) => (
+		<div
+			class:list={['track-row', { featured: track.featured, 'is-hidden': index >= pageSize }]}
+			data-track-index={index}
+		>
+			<span class="track-name">
+				<svg><use href="#i-music"></use></svg>
+				<span><strong>{track.title}</strong><small>{track.code}</small></span>
+			</span>
+			<span>{track.year}</span>
+			{track.href ? (
+				<a class="row-action" href={track.href} target="_blank" rel="noreferrer">
+					{track.featured ? 'ESCUCHAR' : 'ABRIR'} <svg><use href="#i-external"></use></svg>
+				</a>
+			) : (
+				<span class="row-action is-pending">PRONTO</span>
+			)}
+			<a class="row-action" href={`/historia/${track.slug}`}>
+				LEER <svg><use href="#i-doc"></use></svg>
+			</a>
+		</div>
+	))}
+	<nav class="track-pager" aria-label="Paginación del directorio">
+		<button type="button" class="pager-btn" data-page-prev disabled aria-label="Página anterior">◀</button>
+		<div class="pager-pages">
+			{Array.from({ length: totalPages }, (_, i) => (
+				<button
+					type="button"
+					class:list={['pager-btn', { 'is-active': i === 0 }]}
+					data-page={i + 1}
+					aria-label={`Página ${i + 1}`}
+					aria-current={i === 0 ? 'page' : undefined}
+				>
+					{String(i + 1).padStart(2, '0')}
+				</button>
+			))}
+		</div>
+		<p class="pager-status">PÁGINA 01 / {String(totalPages).padStart(2, '0')}</p>
+		<button type="button" class="pager-btn" data-page-next aria-label="Página siguiente">▶</button>
+	</nav>
+</div>
+<p class="track-note">* ABRIR lanza el smart link cuando está disponible. LEER abre la bitácora. Los demás llegan pronto a Spotify.</p>
+
+<script>
+	const PAGE_SIZE = 10;
+
+	document.querySelectorAll<HTMLElement>('.track-browser[data-page-size]').forEach((browser) => {
+		const rows = [...browser.querySelectorAll<HTMLElement>('.track-row')];
+		const pager = browser.querySelector<HTMLElement>('.track-pager');
+		if (!pager || rows.length <= PAGE_SIZE) {
+			pager?.setAttribute('hidden', '');
+			return;
+		}
+
+		const totalPages = Math.ceil(rows.length / PAGE_SIZE);
+		const status = pager.querySelector<HTMLElement>('.pager-status');
+		const prev = pager.querySelector<HTMLButtonElement>('[data-page-prev]');
+		const next = pager.querySelector<HTMLButtonElement>('[data-page-next]');
+		const pageButtons = [...pager.querySelectorAll<HTMLButtonElement>('[data-page]')];
+		let page = 1;
+
+		const render = (scroll = false) => {
+			rows.forEach((row, index) => {
+				const onPage = Math.floor(index / PAGE_SIZE) + 1 === page;
+				row.classList.toggle('is-hidden', !onPage);
+				if (onPage) row.classList.add('is-visible');
+			});
+
+			if (status) status.textContent = `PÁGINA ${String(page).padStart(2, '0')} / ${String(totalPages).padStart(2, '0')}`;
+			if (prev) prev.disabled = page === 1;
+			if (next) next.disabled = page === totalPages;
+
+			pageButtons.forEach((button) => {
+				const active = Number(button.dataset.page) === page;
+				button.classList.toggle('is-active', active);
+				if (active) button.setAttribute('aria-current', 'page');
+				else button.removeAttribute('aria-current');
+			});
+
+			if (scroll) browser.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		};
+
+		prev?.addEventListener('click', () => {
+			if (page <= 1) return;
+			page -= 1;
+			render(true);
+		});
+
+		next?.addEventListener('click', () => {
+			if (page >= totalPages) return;
+			page += 1;
+			render(true);
+		});
+
+		pageButtons.forEach((button) => {
+			button.addEventListener('click', () => {
+				const nextPage = Number(button.dataset.page);
+				if (!nextPage || nextPage === page) return;
+				page = nextPage;
+				render(true);
+			});
+		});
+	});
+</script>
