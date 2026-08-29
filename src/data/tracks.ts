@@ -11,12 +11,24 @@ export type Track = {
 
 export const tracks: Track[] = [
 	{
+		slug: 'no-love-left',
+		title: 'No Love Left',
+		year: '2026',
+		code: 'NOLOVE.ERR',
+		href: 'https://fanlink.tv/noloveerr',
+		featured: true,
+		teaser: 'Darlo todo por alcanzar algo que nunca existió.',
+		story: [
+			'Nace del deseo de mejorar. De darlo todo por una persona. De creer que, si uno se esfuerza lo suficiente, por fin va a alcanzar eso que parece amor.',
+			'Después se entiende: nunca existió. Solo el enamoramiento, y la ilusión que teje. Tanto las mentiras ajenas como las que uno se cuenta para no despertar. Estás dentro de un sueño. Y si es real, ¿te esforzaste por la persona correcta? O seguías siendo insuficiente para algo que, desde el principio, no estaba ahí.',
+		],
+	},
+	{
 		slug: 'tell-me-why',
 		title: 'Tell Me Why',
 		year: '2026',
 		code: 'TMW.EXE',
 		href: 'https://etmae.fanlink.tv/tellmewhy',
-		featured: true,
 		teaser: 'El porqué que se queda cuando el amor no llega a ser.',
 		story: [
 			'Hay amores que no llegan a tener nombre. Solo una pregunta que se queda en el pecho cuando la señal no vuelve.',
