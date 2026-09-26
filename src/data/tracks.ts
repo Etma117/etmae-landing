@@ -11,12 +11,24 @@ export type Track = {
 
 export const tracks: Track[] = [
 	{
+		slug: 'anything-exe',
+		title: 'Anything.exe',
+		year: '2026',
+		code: 'ANYTHING.EXE',
+		href: 'https://etmae.fanlink.tv/anythingforyou',
+		featured: true,
+		teaser: 'Darlo todo por la ilusión que uno mismo construyó.',
+		story: [
+			'Enamorarse a veces es poner a alguien en un altar. Confundir la amabilidad con una historia que nunca existió, mirar sus fotos y creer que el sentimiento era de los dos.',
+			'Lo que siempre fue real fue cómo se sintió. Esta canción no corre para alcanzar a alguien: corre para procesar la desilusión, y el amor que creció aunque no llegó a darse.',
+		],
+	},
+	{
 		slug: 'no-love-left',
 		title: 'No Love Left',
 		year: '2026',
 		code: 'NOLOVE.ERR',
 		href: 'https://fanlink.tv/noloveerr',
-		featured: true,
 		teaser: 'Darlo todo por alcanzar algo que nunca existió.',
 		story: [
 			'Nace del deseo de mejorar. De darlo todo por una persona. De creer que, si uno se esfuerza lo suficiente, por fin va a alcanzar eso que parece amor.',
